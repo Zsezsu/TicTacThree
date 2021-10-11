@@ -1,5 +1,5 @@
-def init_board():
-    board = [['.']*3 for i in range(3)]
+def init_board(number):
+    board = [['.']* number for i in range(number)]
     return board
 
 
@@ -32,7 +32,8 @@ def is_full(board):
 
 def print_board(board):
     """Prints a 3-by-3 board on the screen with borders."""
-    pass
+    for element in board:
+        print (element)
 
 
 def print_result(winner):
@@ -41,7 +42,7 @@ def print_result(winner):
 
 
 def tictactoe_game(mode='HUMAN-HUMAN'):
-    board = init_board()
+    board = init_board(number=3)
 
     # use get_move(), mark(), has_won(), is_full(), and print_board() to create game logic
     print_board(board)

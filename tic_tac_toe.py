@@ -5,24 +5,45 @@ def init_board(number):
     return board
 
 
-def get_move(board, player):
-    """Returns the coordinates of a valid move for player on board."""
+def validate_moves(board):
+    """ Validates moves on a dynamic board, returns valid_moves list
+        and valid letters, valid numbers"""
     abc_list = string.ascii_uppercase
     abc_list = list(abc_list)
+    valid_letters = []
+    valid_numbers = []
     valid_moves = []
-    for row in range(len(board)):
-        for col in range(len(board)):
-            x = str(col+1)
-            row_letter = abc_list[row]
+    for col in range(len(board)):
+        col_number = str(col+1)
+        for row in range(len(board)):
+            x = str(row+1)
+            row_letter = abc_list[col]
             valid_coord = row_letter+x
-            valid_moves.append(valid_coord)        
-    print(valid_moves)
+            valid_moves.append(valid_coord)
+        valid_letters.append(row_letter)
+        valid_numbers.append(col_number)        
+    return valid_moves, valid_letters, valid_numbers
+
+
+def get_move(board, player):
+    """Returns the coordinates of a valid move for player on board."""
+    valid_moves = validate_moves(board)[0]
+    valid_letters, valid_numbers = validate_moves(board)[1], validate_moves(board)[2]
+    print(valid_moves, valid_letters, valid_numbers)
     user_input = ""
-    # while user_input not in valid_moves:
-    #     user_input = input("Please give me a coordinate! ")
-    #     if user_input
-    #     row, col = 0, 0
-    #     return row, col
+    while True:
+        user_input = input("Please give me a coordinate! ").upper()
+        if user_input not in valid_moves:
+            print("It's not a valid coordinate! Please try again! ")
+            continue
+        else:
+            for element in user_input:      # mukodik, de csak 9x9 es tablaig, ha nagyobbat akarunk, akkor ezt a for ciklus at kell irni!
+                if element in valid_letters:
+                    row = valid_letters.index(element)
+                if element in valid_numbers:
+                    col = valid_numbers.index(element)
+            print (user_input, row, col)
+            return row, col
 
 
 def get_ai_move(board, player):

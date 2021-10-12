@@ -1,4 +1,5 @@
 import string
+import sys
 
 def init_board(number):
     board = [['.']* number for i in range(number)]
@@ -7,12 +8,40 @@ def init_board(number):
 
 def start_menu():
 
-    #  mode: 1. tic tac toe (3x3)
-    # 2. Gomoku (9x9)  ??
-    # if input == "dev"
-    # mode = Human v Human, or Human AI
-    # return number, (mode)
-    pass
+    print(
+
+        """
+
+    Welcome to the Tic Tac Toe Game!
+
+
+    Please Choose Player Mode:
+        1. Tic Tac Toe (3x3) - Human vs Human
+        2. Tic Tac Toe (3x3) - Human vs AI
+        3. Gomoku (9x9) - Human vs Human
+        4. Gomoku (9x9) - Human vs AI
+        5. Exit
+
+        """
+        )
+
+    while True:
+        player_mode = input("Please give me your choice! \n ")
+        if player_mode == '1':
+            return 3, 'HUMAN-HUMAN'
+        elif player_mode == '2':
+            return 3,'HUMAN-AI'
+        elif player_mode == '3':
+            return 9, 'HUMAN-HUMAN'
+        elif player_mode == '4':
+            return 9, 'HUMAN-AI'
+        elif player_mode == '5':
+            sys.exit()
+        else:
+            print("Invalid option, please give me a valid option")
+            continue
+
+
 
 def validate_moves(board):
     """ Validates moves on a dynamic board, returns valid_moves list
@@ -119,21 +148,31 @@ def tictactoe_game(board, number, mode='HUMAN-HUMAN'):
     print_board(board, number)
     while True:
         player1, player2 = "X", "0"
-        row, col = get_move(board, player1)
-        board = mark(board, player1, row, col)
-        print_board(board)
+        if counter % 2 == 1:
+            row, col = get_move(board, player1)
+            board = mark(board, player1, row, col)
+            print_board(board, number)
+            counter -= 1
+        else:
+            row, col = get_move(board, player2)
+            board = mark(board, player2, row, col)
+            print_board(board, number)
+            counter -= 1
         if is_full(board):
             print("It's a tie!")
             break
-        winner = 0
-        print_result(winner)
+        # winner = 0
+        # print_result(winner)
 
 
 def main_menu():
     # start menu  >> return number, mode
-    number = 9
+    number, mode = start_menu()
     board = init_board(number)
-    tictactoe_game(board, number, 'HUMAN-HUMAN')
+    if mode == 'HUMAN-HUMAN':
+        tictactoe_game(board, number, 'HUMAN-HUMAN')
+    if mode == 'HUMAN-AI':
+        tictactoe_game(board, number, 'HUMAN-AI')
     # tictactoe_game('human-AI')
 
 

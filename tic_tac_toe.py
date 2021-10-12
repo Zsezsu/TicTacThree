@@ -1,4 +1,5 @@
 import string
+import sys
 
 def init_board(number):
     board = [['.']* number for i in range(number)]
@@ -6,13 +7,51 @@ def init_board(number):
 
 
 def start_menu():
-    # Human v Human, or Human AI
+    print(
+        """
+    
+    Welcome to the Tic Tac Toe Game!
+
+
+    Please Choose Player Mode:
+        1. Tic Tac Toe (3x3) - Human vs Human
+        2. Tic Tac Toe (3x3) - Human vs AI
+        3. Gomoku (9x9) - Human vs Human
+        4. Gomoku (9x9) - Human vs AI
+        5. Exit
+   
+        """
+    
+   
+    while True:
+        player_mode = input()
+        if input == 1:
+            return tictactoe_game(board, number = 3, mode='HUMAN-HUMAN')
+        elif input == 2:
+            return tictactoe_game(board, number = 3, mode='HUMAN-AI')
+        elif input == 3:
+            return tictactoe_game(board, number = 9, mode='HUMAN-HUMAN')
+        elif input == 4:
+            return tictactoe_game(board, number = 9, mode='HUMAN-AI')
+        elif input == 5:
+            exit()
+        else:
+            print("Invalid option")
+
+        
+
+    input = 
+
+ 
+    
+    Human v Human, or Human AI
     #  mode: 1. tic tac toe (3x3)
     # 2. Gomoku (9x9)  ??
     # 3. if input == "dev"
     # return number, (azt returnoli h mekkor a palya, 1 returnolje a 3, 2 9et )
     
     pass
+
 
 def validate_moves(board):
     """ Validates moves on a dynamic board, returns valid_moves list
@@ -64,15 +103,9 @@ def get_ai_move(board, player):
 def mark(board, player, row, col):
     """Marks the element at row & col on the board for player."""
     while True:
-<<<<<<< HEAD
-        if board[row][col] =='.':
-            board[row][col] = player
-            break
-=======
         if board[row][col] == '.':
             board[row][col] = player
             return board
->>>>>>> 7b6bf491eda028be601e5a4d22002d5d160a3cf3
         else:
             print("this field is already taken field!")
             continue

@@ -6,11 +6,12 @@ def init_board(number):
 
 
 def start_menu():
+    # Human v Human, or Human AI
     #  mode: 1. tic tac toe (3x3)
     # 2. Gomoku (9x9)  ??
-    # if input == "dev"
-    # mode = Human v Human, or Human AI
-    # return number, (mode)
+    # 3. if input == "dev"
+    # return number, (azt returnoli h mekkor a palya, 1 returnolje a 3, 2 9et )
+    
     pass
 
 def validate_moves(board):
@@ -64,7 +65,7 @@ def mark(board, player, row, col):
     """Marks the element at row & col on the board for player."""
     while True:
         if board[row][col] =='.':
-            board[row][col] == player
+            board[row][col] = player
             break
         else:
             print("this field is already taken field!")

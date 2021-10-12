@@ -5,6 +5,13 @@ def init_board(number):
     return board
 
 
+def start_menu():
+    #  mode: 1. tic tac toe (3x3)
+    # 2. Gomoku (9x9)  ??
+    # if input == "dev"
+    # mode = Human v Human, or Human AI
+    # return number, (mode)
+
 def validate_moves(board):
     """ Validates moves on a dynamic board, returns valid_moves list
         and valid letters, valid numbers"""
@@ -78,22 +85,23 @@ def print_result(winner):
     pass
 
 
-def tictactoe_game(mode='HUMAN-HUMAN'):
-    board = init_board(number=3)
+def tictactoe_game(mode='HUMAN-HUMAN', board):
 
     # use get_move(), mark(), has_won(), is_full(), and print_board() to create game logic
     print_board(board)
     player1, player2 = "X", "0"
-    get_move(board, player1)
-    # row, col = get_move(board, player1)
-    #mark(board, 1, row, col)
+    row, col = get_move(board, player1)
+    mark(board, player1, row, col)
 
     winner = 0
     print_result(winner)
 
 
 def main_menu():
-    tictactoe_game('HUMAN-HUMAN')
+    # start menu  >> return number, mode
+    board = init_board(number=3)
+    tictactoe_game('HUMAN-HUMAN', board)
+    # tictactoe_game('human-AI')
 
 
 if __name__ == '__main__':

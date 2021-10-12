@@ -79,6 +79,9 @@ def get_move(board, player):
                     row = valid_letters.index(element)
                 if element in valid_numbers:
                     col = valid_numbers.index(element)
+            if board[row][col] != '.':
+                print("The field is already taken")
+                continue
             return row, col
 
 
@@ -93,7 +96,8 @@ def mark(board, player, row, col):
     if board[row][col] == '.':
         board[row][col] = player
     return board
-         
+
+
 
 def has_won(board, player):
     """Returns True if player has won the game."""

@@ -62,7 +62,13 @@ def get_ai_move(board, player):
 
 def mark(board, player, row, col):
     """Marks the element at row & col on the board for player."""
-    pass
+    while True:
+        if board[row][col] =='.':
+            board[row][col] == player
+            break
+        else:
+            print("this field is already taken field!")
+            continue
 
 
 def has_won(board, player):

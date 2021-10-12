@@ -63,9 +63,9 @@ def get_ai_move(board, player):
 def mark(board, player, row, col):
     """Marks the element at row & col on the board for player."""
     while True:
-        if board[row][col] =='.':
-            board[row][col] == player
-            break
+        if board[row][col] == '.':
+            board[row][col] = player
+            return board
         else:
             print("this field is already taken field!")
             continue
@@ -100,13 +100,16 @@ def tictactoe_game(board, number, mode='HUMAN-HUMAN'):
     counter = pow(number, 2) # ahogy a player lép, csökken egyet
     # use get_move(), mark(), has_won(), is_full(), and print_board() to create game logic
     print_board(board)
-    player1, player2 = "X", "0"
-    row, col = get_move(board, player1)
-    mark(board, player1, row, col)
-    if is_full(board):
-        print("It's a tie!")
-    winner = 0
-    print_result(winner)
+    while True:
+        player1, player2 = "X", "0"
+        row, col = get_move(board, player1)
+        board = mark(board, player1, row, col)
+        print_board(board)
+        if is_full(board):
+            print("It's a tie!")
+            break
+        winner = 0
+        print_result(winner)
 
 
 def main_menu():

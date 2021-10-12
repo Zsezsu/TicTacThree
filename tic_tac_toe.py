@@ -11,6 +11,7 @@ def start_menu():
     # if input == "dev"
     # mode = Human v Human, or Human AI
     # return number, (mode)
+    pass
 
 def validate_moves(board):
     """ Validates moves on a dynamic board, returns valid_moves list
@@ -61,7 +62,13 @@ def get_ai_move(board, player):
 
 def mark(board, player, row, col):
     """Marks the element at row & col on the board for player."""
-    pass
+    while True:
+        if board[row][col] =='.':
+            board[row][col] == player
+            break
+        else:
+            print("this field is already taken field!")
+            continue
 
 
 def has_won(board, player):
@@ -85,7 +92,7 @@ def print_result(winner):
     pass
 
 
-def tictactoe_game(mode='HUMAN-HUMAN', board):
+def tictactoe_game(board, mode='HUMAN-HUMAN'):
 
     # use get_move(), mark(), has_won(), is_full(), and print_board() to create game logic
     print_board(board)

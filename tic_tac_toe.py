@@ -1,4 +1,5 @@
 import string
+import sys
 
 def init_board(number):
     board = [['.']* number for i in range(number)]
@@ -6,12 +7,41 @@ def init_board(number):
 
 
 def start_menu():
-    #  mode: 1. tic tac toe (3x3)
-    # 2. Gomoku (9x9)  ??
-    # if input == "dev"
-    # mode = Human v Human, or Human AI
-    # return number, (mode)
-    pass
+
+    print(
+
+        """
+
+    Welcome to the Tic Tac Toe Game!
+
+
+    Please Choose Player Mode:
+        1. Tic Tac Toe (3x3) - Human vs Human
+        2. Tic Tac Toe (3x3) - Human vs AI
+        3. Gomoku (9x9) - Human vs Human
+        4. Gomoku (9x9) - Human vs AI
+        5. Exit
+
+        """
+        )
+
+    while True:
+        player_mode = input("Please give me your choice! \n ")
+        if player_mode == '1':
+            return 3, 'Human-Human'
+        elif player_mode == '2':
+            return 3,'Human-AI'
+        elif player_mode == '3':
+            return 9, 'Human-Human'
+        elif player_mode == '4':
+            return 9, 'Human-AI'
+        elif player_mode == '5':
+            sys.exit()
+        else:
+            print("Invalid option, please give me a valid option")
+            continue
+
+
 
 def validate_moves(board):
     """ Validates moves on a dynamic board, returns valid_moves list
@@ -113,7 +143,7 @@ def tictactoe_game(board, number, mode='HUMAN-HUMAN'):
 
 
 def main_menu():
-    # start menu  >> return number, mode
+    start_menu()
     number = 3
     board = init_board(number)
     tictactoe_game(board, number, 'HUMAN-HUMAN')

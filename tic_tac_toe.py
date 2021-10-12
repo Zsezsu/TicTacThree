@@ -90,14 +90,10 @@ def get_ai_move(board, player):
 
 def mark(board, player, row, col):
     """Marks the element at row & col on the board for player."""
-    while True:
-        if board[row][col] == '.':
-            board[row][col] = player
-            return board
-        else:
-            print("this field is already taken field!")
-            continue
-
+    if board[row][col] == '.':
+        board[row][col] = player
+    return board
+         
 
 def has_won(board, player):
     """Returns True if player has won the game."""

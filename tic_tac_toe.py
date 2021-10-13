@@ -181,40 +181,9 @@ def has_won_diagonal1(board, player, number):
                 continue
     return False
 
-# def has_won_diagonal2(board, player, number):
-#     count = 0
-#     for col in range(len(board)):
-#         for row in range(len(board[col])):
-#             try:
-#                 if board[col][row] == player and board[col] + board[row]  == number and :
-#                     count += 1
-#                     if number < 7:
-#                         if count == 2:
-#                             return True
-#                     else:
-#                         if count == 4:
-#                             return True                        
-#                 elif board[col][row] == player and board[col] + board[row]!= number:
-#                     count -= 1    
-#             except IndexError:
-#                 continue
-#     return False
-#for col in range(len(board)):
-    #     for row in range(len(board[col])):
-    #         try:
-    #             if board[col][row] == player and board[col+1][row+1] == player:
-    #                 count += 1
-    #                 if number < 7:
-    #                     if count == 2:
-    #                         return True
-    #                 else:
-    #                     if count == 4:
-    #                         return True                        
-    #             elif board[col][row] == player and board[col+1][row+1] != player:
-    #                 count -= 1    
-    #         except IndexError:
-    #             continue
-    # return False
+def has_won_diagonal2(board, player, number):
+    pass
+
 
 def is_full(board):
     """Returns True if board is full."""

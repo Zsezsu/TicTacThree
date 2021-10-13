@@ -102,7 +102,13 @@ def mark(board, player, row, col):
 
 def has_won(board, player, number):
     """Returns True if player has won the game."""
-    count_list = []
+    if has_won_row(board, player, number) or has_won_coloumn(board, player, number) or has_won_diagonal1(board, player, number):
+        return True
+    else:
+        return False    
+       
+
+def has_won_row(board, player, number):
     count = 0
     for row in range(len(board)):
         for col in range(len(board[row])):
@@ -110,7 +116,7 @@ def has_won(board, player, number):
                 if board[row][col] == player and board[row][col+1] == player:
                     count += 1
                     if number < 7:
-                        if count == 2:
+                       if count == 2:
                             return True
                     else:
                         if count == 4:
@@ -121,6 +127,80 @@ def has_won(board, player, number):
                 continue
     return False
 
+
+def has_won_coloumn(board, player, number):
+    count = 0
+    for col in range(len(board)):
+        for row in range(len(board[col])):
+            try:
+                if board[col][row] == player and board[col+1][row] == player:
+                    count += 1
+                    if number < 7:
+                        if count == 2:
+                            return True
+                    else:
+                        if count == 4:
+                            return True                        
+                elif board[col][row] == player and board[col+1][row] != player:
+                    count -= 1    
+            except IndexError:
+                continue
+    return False
+    
+
+def has_won_diagonal1(board, player, number):
+    count = 0
+    for col in range(len(board)):
+        for row in range(len(board[col])):
+            try:
+                if board[col][row] == player and board[col+1][row+1] == player:
+                    count += 1
+                    if number < 7:
+                        if count == 2:
+                            return True
+                    else:
+                        if count == 4:
+                            return True                        
+                elif board[col][row] == player and board[col+1][row+1] != player:
+                    count -= 1    
+            except IndexError:
+                continue
+    return False
+
+# def has_won_diagonal2(board, player, number):
+#     count = 0
+#     for col in range(len(board)):
+#         for row in range(len(board[col])):
+#             try:
+#                 if board[col][row] == player and board[col] + board[row]  == number and :
+#                     count += 1
+#                     if number < 7:
+#                         if count == 2:
+#                             return True
+#                     else:
+#                         if count == 4:
+#                             return True                        
+#                 elif board[col][row] == player and board[col] + board[row]!= number:
+#                     count -= 1    
+#             except IndexError:
+#                 continue
+#     return False
+#for col in range(len(board)):
+    #     for row in range(len(board[col])):
+    #         try:
+    #             if board[col][row] == player and board[col+1][row+1] == player:
+    #                 count += 1
+    #                 if number < 7:
+    #                     if count == 2:
+    #                         return True
+    #                 else:
+    #                     if count == 4:
+    #                         return True                        
+    #             elif board[col][row] == player and board[col+1][row+1] != player:
+    #                 count -= 1    
+    #         except IndexError:
+    #             continue
+    # return False
 
 def is_full(board):
     """Returns True if board is full."""

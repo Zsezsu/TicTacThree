@@ -1,5 +1,6 @@
 import string
 import sys
+import random
 
 def init_board(number):
     board = [['.']* number for i in range(number)]
@@ -85,10 +86,23 @@ def get_move(board, player):
             return row, col
 
 
-def get_ai_move(board, player):
+def get_ai_move(board, player, ai_row, ai_col):
     """Returns the coordinates of a valid move for player on board."""
-    row, col = 0, 0
+    valid_moves, valid_letters, valid_numbers = validate_moves(board)
+    print(valid_moves, valid_letters, valid_numbers)
+    ai_letter_choice, ai_number_choice = random.choice(valid_letters), random.choice(valid_numbers)
+    # lecopizom a valid letterst és valid numberst, és később csökkentem 
+    row = valid_letters.index(ai_letter_choice)
+    col = valid_numbers.index(ai_number_choice)
+    print(row, col)
     return row, col
+
+
+def ai_validate_moves(board):
+    valid_moves, valid_letters, valid_numbers = validate_moves(board)
+    ai_valid_letters = valid_letters
+    ai_valid_numbers = valid_numbers
+    return ai_valid_letters, ai_valid_numbers
 
 
 def mark(board, player, row, col):
@@ -133,6 +147,7 @@ def is_full(board):
 def colour_print(colour_code, word):
     return f'\u001b[{colour_code};1m{word}\001'
 
+
 def print_board(board, number):
     """Prints a 3-by-3 board on the screen with borders."""
     abc_list = string.ascii_uppercase
@@ -157,13 +172,29 @@ def print_board(board, number):
 def print_result(winner):
     """Congratulates winner or proclaims tie (if winner equals zero)."""
     print(f'{winner} takes it all! Congrats for {winner} !')
-    # play again() function
+    play_again()
+
+
+def play_again():
+    while True:
+        user_input = input("Would you like to play again?\nYes or No?\n ")
+        if user_input.lower() == "y":
+            main_menu()
+        elif user_input.lower() == "n":
+            print("Thank you for playing!\nHave a nice day!\n ")
+            sys.exit()
+        else:
+            print("Invalid input, please try again! y/n")
+            continue
 
 
 def tictactoe_game(board, number, mode='HUMAN-HUMAN'):
     counter = pow(number, 2) # ahogy a player lép, csökken egyet
     # use get_move(), mark(), has_won(), is_full(), and print_board() to create game logic
     print_board(board, number)
+    valid_ai_row, valid_ai_col = ai_validate_moves(board)
+    ai_row, ai_col = valid_ai_row.copy(), valid_ai_col.copy()
+    print(ai_col, ai_row)
     while True:
         player1, player2 = "X", "0"
         if counter % 2 == 1:
@@ -174,15 +205,19 @@ def tictactoe_game(board, number, mode='HUMAN-HUMAN'):
                 print_result(player1)
             counter -= 1
         else:
-            row, col = get_move(board, player2)
-            board = mark(board, player2, row, col)
+            if mode == 'HUMAN-HUMAN':
+                row, col = get_move(board, player2)
+                board = mark(board, player2, row, col)
+            else:
+                row, col = get_ai_move(board, player2, ai_row, ai_col)
+                board = mark(board, player2, row, col)
             print_board(board, number)
             if has_won(board, player2, number):
-                print_result(player1)
+                print_result(player2)
             counter -= 1
         if is_full(board):
             print("It's a tie!")
-            break
+            play_again()
         # winner = 0
         # print_result(winner)
 

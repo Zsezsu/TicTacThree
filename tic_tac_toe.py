@@ -76,11 +76,9 @@ def get_move(board, player):
             print("It's not a valid coordinate! Please try again! ")
             continue
         else:
-            for element in user_input:      # mukodik, de csak 9x9 es tablaig, ha nagyobbat akarunk, akkor ezt a for ciklus at kell irni!
-                if element in valid_letters:
-                    row = valid_letters.index(element)
-                if element in valid_numbers:
-                    col = valid_numbers.index(element)
+            row_index, col_index = user_input[0], user_input[1::]
+            row = valid_letters.index(row_index)
+            col = valid_numbers.index(col_index)
             if board[row][col] != '.':
                 print("The field is already taken")
                 continue
@@ -118,6 +116,8 @@ def has_won(board, player, number):
     """Returns True if player has won the game."""
     if has_won_row(board, player, number) or has_won_coloumn(board, player, number) or has_won_diagonal1(board, player, number):
         return True
+    elif has_won_diagonal2(board, player, number):
+        return True
     else:
         return False    
        
@@ -136,7 +136,7 @@ def has_won_row(board, player, number):
                         if count == 4:
                             return True                        
                 elif board[row][col] == player and board[row][col+1] != player:
-                    count -= 1    
+                    count -= 1 # 0 jobb   
             except IndexError:
                 continue
     return False
@@ -181,8 +181,25 @@ def has_won_diagonal1(board, player, number):
                 continue
     return False
 
+
 def has_won_diagonal2(board, player, number):
-    pass
+    count = 0
+    for col in range(len(board)):
+        for row in range(len(board[col])):
+            try:
+                if board[col][row] == player and board[col-1][row+1] == player:
+                    count += 1
+                    if number < 7:
+                        if count == 2:
+                            return True
+                    else:
+                        if count == 4:
+                            return True                        
+                elif board[col][row] == player and board[col-1][row+1] != player:
+                    count -= 1    
+            except IndexError:
+                continue
+    return False
 
 
 def is_full(board):
@@ -204,8 +221,10 @@ def print_board(board, number):
     for number in range(number):
         if number == 0:
             print('   ' + str(number+1), end='  ')
-        else:
+        elif number > 0 and number < 10:
             print('  ' + str(number+1), end='  ')
+        else:
+            print(' ' + str(number+1), end='  ')
     print('')
     for i in range(len(board)):
         for j in range(len(board[i])):

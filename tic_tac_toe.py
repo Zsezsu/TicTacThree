@@ -80,6 +80,9 @@ def get_move(board, player):
                     row = valid_letters.index(element)
                 if element in valid_numbers:
                     col = valid_numbers.index(element)
+            if board[row][col] != '.':
+                print("The field is already taken")
+                continue
             return row, col
 
 
@@ -94,10 +97,28 @@ def mark(board, player, row, col):
     if board[row][col] == '.':
         board[row][col] = player
     return board
-         
 
-def has_won(board, player):
+
+
+def has_won(board, player, number):
     """Returns True if player has won the game."""
+    count_list = []
+    count = 0
+    for row in range(len(board)):
+        for col in range(len(board[row])):
+            try:
+                if board[row][col] == player and board[row][col+1] == player:
+                    count += 1
+                    if number < 7:
+                        if count == 2:
+                            return True
+                    else:
+                        if count == 4:
+                            return True                        
+                elif board[row][col] == player and board[row][col+1] != player:
+                    count -= 1    
+            except IndexError:
+                continue
     return False
 
 
@@ -136,7 +157,8 @@ def print_board(board, number):
 
 def print_result(winner):
     """Congratulates winner or proclaims tie (if winner equals zero)."""
-    pass
+    print(f'{winner} takes it all! Congrats for {winner} !')
+    # play again() function
 
 
 def tictactoe_game(board, number, mode='HUMAN-HUMAN'):
@@ -149,11 +171,15 @@ def tictactoe_game(board, number, mode='HUMAN-HUMAN'):
             row, col = get_move(board, player1)
             board = mark(board, player1, row, col)
             print_board(board, number)
+            if has_won(board, player1, number):
+                print_result(player1)
             counter -= 1
         else:
             row, col = get_move(board, player2)
             board = mark(board, player2, row, col)
             print_board(board, number)
+            if has_won(board, player2, number):
+                print_result(player1)
             counter -= 1
         if is_full(board):
             print("It's a tie!")

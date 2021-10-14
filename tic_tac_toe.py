@@ -107,7 +107,8 @@ def smart_ai_checking_one(board, player2, enemy):
                     return [(row, col+1), (row, col-1), (row-1, col-1),(row-1, col),(row-1, col+1)]
                 elif row == number and col == 0:
                     return [(row-1, col), (row-1, col+1), (row, col+1)]
-
+                else:
+                    return [(row+1, col), (row+1, col+1), (row+1, col-1),(row, col+1), (row, col-1), (row-1, col-1), (row-1, col), (row-1, col+1)]
 
                 
 

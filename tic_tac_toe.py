@@ -1,11 +1,17 @@
 import string
 import sys
 import random
+import os
+import time
+
 
 def init_board(number):
     board = [['.']* number for i in range(number)]
     return board
 
+
+def clear():
+    os.system("clear")
 
 def start_menu():
 
@@ -109,39 +115,40 @@ def smart_ai_checking_one(board, player2, enemy):
                     return [(row-1, col), (row-1, col+1), (row, col+1)]
                 else:
                     return [(row+1, col), (row+1, col+1), (row+1, col-1),(row, col+1), (row, col-1), (row-1, col-1), (row-1, col), (row-1, col+1)]
-
-                
-
+               
 
 def smart_ai_checking_two(board, player2, enemy):
     for row in range(len(board)):
         for col in range(len(board[row])):
             try:
-                if board[row][col] == enemy or board[row][col] == player2:
-                    if board[row][col+1] == enemy or board[row][col+1] == player2:
+                if board[row][col] != '.':
+                    if board[row][col+1] != '.':
                         if board[row][col+2] == '.':
                             return row, col+2
-                    if board[row+1][col] == enemy or board[row+1][col] == player2:
+                    if board[row+1][col] != '.':
                         if board[row+2][col] == '.':
                             return row+2, col
-                    if board[row+1][col+1] == enemy or board[row+1][col+1] == player2:
+                    if board[row+1][col+1] != '.':
                         if board[row+2][col+2] == '.':
                             return row+2, col+2
-                    if board[row+1][col-1] == enemy or board[row+1][col-1] == player2:
+                    if board[row+1][col-1] != '.':
                         if board[row+2][col-2] == '.':
                             return row+2, col-2
             except IndexError:
                 continue
-        smart_ai_checking_one(board, player2, enemy) # ki kell találni mit cisnáljon a listával pl random válasszon
-        #return kell
+    ai_move_list = []
+    ai_move_list = smart_ai_checking_one(board, player2, enemy) # ki kell találni mit cisnáljon a listával pl random válasszon
+    coord = random.choice(ai_move_list)    
+    return coord
 
 
 def get_ai_move(board, player2, enemy):
     """Returns the coordinates of a valid move for player on board."""
     valid_moves = ai_validate_moves(board)
-    if board[1][1] != player2 and board[1][1] != enemy:
+    number = len(board) - 1
+    if number == 3 and board[1][1] != player2 and board[1][1] != enemy:
         row, col = 1, 1
-    elif board[1][1] == enemy:
+    elif number == 3 and board[1][1] == enemy:
         corner_coords = [(0, 0), (0, 2), (2, 0), (2, 2)]
         row, col = random.choice(corner_coords)
     else:
@@ -316,11 +323,15 @@ def play_again():
 
 def tictactoe_game(board, number, mode='HUMAN-HUMAN'):
     counter = pow(number, 2)
+    time.sleep(2)
+    clear()
     print_board(board, number)
     while True:
         player1, player2 = "X", "0"
         if counter % 2 == 1:
             row, col = get_move(board, player1)
+            time.sleep(1)
+            clear()
             board = mark(board, player1, row, col)
             print_board(board, number)
             if has_won(board, player1, number):
@@ -329,8 +340,12 @@ def tictactoe_game(board, number, mode='HUMAN-HUMAN'):
         else:
             if mode == 'HUMAN-HUMAN':
                 row, col = get_move(board, player2)
+                time.sleep(1)
+                clear()
                 board = mark(board, player2, row, col)
             else:
+                time.sleep(2)
+                clear()
                 row, col = get_ai_move(board, player2, player1)
                 board = mark(board, player2, row, col)
             print_board(board, number)

@@ -85,23 +85,70 @@ def get_move(board, player):
             return row, col
 
 
-def get_ai_move(board, player, ai_row, ai_col):
+def smart_ai_checking_one(board, player2, enemy):
+    list = []
+    number = len(board)-1
+    for row in range(len(board)):
+        for col in range(len(board[row])):
+            if board[row][col] == enemy:
+                if row == 0 and col == 0:
+                    return [(row+1, col), (row, col+1), (row+1, col+1)]
+                elif row != 0 and col == 0 and row != number:
+                    return [(row+1, col), (row, col+1), (row+1, col+1), (row-1, col+1), (row-1, col)]
+                elif row == 0 and col != 0:
+                    return [(row+1, col), (row, col+1), (row+1, col+1), (row-1, col-1), (row, col-1)]
+                elif col == number and row == 0:
+                    return [(row+1, col), (row, col-1), (row+1, col+1)]
+                elif col == number and row != 0 and row != number:
+                    pass
+
+
+def smart_ai_checking_two(board, player2, enemy):
+    for row in range(len(board)):
+        for col in range(len(board[row])):
+            try:
+                if board[row][col] == enemy or board[row][col] == player2:
+                    if board[row][col+1] == enemy or board[row][col+1] == player2:
+                        if board[row][col+2] == '.':
+                            return row, col+2
+                    if board[row+1][col] == enemy or board[row+1][col] == player2:
+                        if board[row+2][col] == '.':
+                            return row+2, col
+                    if board[row+1][col+1] == enemy or board[row+1][col+1] == player2:
+                        if board[row+2][col+2] == '.':
+                            return row+2, col+2
+                    if board[row+1][col-1] == enemy or board[row+1][col-1] == player2:
+                        if board[row+2][col-2] == '.':
+                            return row+2, col-2
+            except IndexError:
+                continue
+        smart_ai_checking_one(board, player2, enemy) # ki kell találni mit cisnáljon a listával pl random válasszon
+        #return kell
+
+
+def get_ai_move(board, player2, enemy):
     """Returns the coordinates of a valid move for player on board."""
-    valid_moves, valid_letters, valid_numbers = validate_moves(board)
-    print(valid_moves, valid_letters, valid_numbers)
-    ai_letter_choice, ai_number_choice = random.choice(valid_letters), random.choice(valid_numbers)
-    # lecopizom a valid letterst és valid numberst, és később csökkentem 
-    row = valid_letters.index(ai_letter_choice)
-    col = valid_numbers.index(ai_number_choice)
-    print(row, col)
+    valid_moves = ai_validate_moves(board)
+    if board[1][1] != player2 and board[1][1] != enemy:
+        row, col = 1, 1
+    elif board[1][1] == enemy:
+        corner_coords = [(0, 0), (0, 2), (2, 0), (2, 2)]
+        row, col = random.choice(corner_coords)
+    else:
+        row, col =  smart_ai_checking_two(board, player2, enemy)
     return row, col
 
 
 def ai_validate_moves(board):
-    valid_moves, valid_letters, valid_numbers = validate_moves(board)
-    ai_valid_letters = valid_letters
-    ai_valid_numbers = valid_numbers
-    return ai_valid_letters, ai_valid_numbers
+    valid_moves = []
+    ai_tuple_coord = ()
+    for row in range(len(board)):
+        for col in range(len(board[row])):
+            if board[row][col] == '.':
+                ai_tuple_coord = (row, col)
+                valid_moves.append(ai_tuple_coord)
+    print(ai_tuple_coord, valid_moves)
+    return valid_moves
 
 
 def mark(board, player, row, col):
@@ -258,12 +305,8 @@ def play_again():
 
 
 def tictactoe_game(board, number, mode='HUMAN-HUMAN'):
-    counter = pow(number, 2) # ahogy a player lép, csökken egyet
-    # use get_move(), mark(), has_won(), is_full(), and print_board() to create game logic
+    counter = pow(number, 2)
     print_board(board, number)
-    valid_ai_row, valid_ai_col = ai_validate_moves(board)
-    ai_row, ai_col = valid_ai_row.copy(), valid_ai_col.copy()
-    print(ai_col, ai_row)
     while True:
         player1, player2 = "X", "0"
         if counter % 2 == 1:
@@ -278,7 +321,7 @@ def tictactoe_game(board, number, mode='HUMAN-HUMAN'):
                 row, col = get_move(board, player2)
                 board = mark(board, player2, row, col)
             else:
-                row, col = get_ai_move(board, player2, ai_row, ai_col)
+                row, col = get_ai_move(board, player2, player1)
                 board = mark(board, player2, row, col)
             print_board(board, number)
             if has_won(board, player2, number):
@@ -287,20 +330,17 @@ def tictactoe_game(board, number, mode='HUMAN-HUMAN'):
         if is_full(board):
             print("It's a tie!")
             play_again()
-        # winner = 0
-        # print_result(winner)
 
 
 def main_menu():
-    # start menu  >> return number, mode
     number, mode = start_menu()
     board = init_board(number)
     if mode == 'HUMAN-HUMAN':
         tictactoe_game(board, number, 'HUMAN-HUMAN')
     if mode == 'HUMAN-AI':
         tictactoe_game(board, number, 'HUMAN-AI')
-    # tictactoe_game('human-AI')
 
 
 if __name__ == '__main__':
     main_menu()
+

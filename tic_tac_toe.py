@@ -95,12 +95,21 @@ def smart_ai_checking_one(board, player2, enemy):
                     return [(row+1, col), (row, col+1), (row+1, col+1)]
                 elif row != 0 and col == 0 and row != number:
                     return [(row+1, col), (row, col+1), (row+1, col+1), (row-1, col+1), (row-1, col)]
-                elif row == 0 and col != 0:
+                elif row == 0 and col != 0 and col !=number:
                     return [(row+1, col), (row, col+1), (row+1, col+1), (row-1, col-1), (row, col-1)]
                 elif col == number and row == 0:
                     return [(row+1, col), (row, col-1), (row+1, col+1)]
                 elif col == number and row != 0 and row != number:
-                    pass
+                    return [(row+1, col), (row+1, col-1), (row, col-1),(row-1, col-1),(row-1, col)]
+                elif col == number and row==number:
+                    return [(row, col-1), (row-1, col-1), (row-1, col)]
+                elif row == number and col !=0 and col!=number:
+                    return [(row, col+1), (row, col-1), (row-1, col-1),(row-1, col),(row-1, col+1)]
+                elif row == number and col == 0:
+                    return [(row-1, col), (row-1, col+1), (row, col+1)]
+
+
+                
 
 
 def smart_ai_checking_two(board, player2, enemy):

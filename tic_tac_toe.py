@@ -17,7 +17,7 @@ def start_menu():
 
     print(
 
-        """
+        """\u001b[32;1m
 
     Welcome to the Tic Tac Toe Game!
 
@@ -27,13 +27,13 @@ def start_menu():
         2. Tic Tac Toe (3x3) - Human vs AI
         3. Gomoku (9x9) - Human vs Human
         4. Gomoku (9x9) - Human vs AI
-        5. Exit
+        5. Exit\u001b[0m
 
         """
         )
 
     while True:
-        player_mode = input("Please give me your choice! \n ")
+        player_mode = input(colour_print(32, "Please give me your choice! \n" ))
         if player_mode == '1':
             return 3, 'HUMAN-HUMAN'
         elif player_mode == '2':
@@ -45,7 +45,7 @@ def start_menu():
         elif player_mode == '5':
             sys.exit()
         else:
-            print("Invalid option, please give me a valid option")
+            print(colour_print(31, "Invalid option, please give me a valid option"))
             continue
 
 
@@ -77,16 +77,16 @@ def get_move(board, player):
     valid_letters, valid_numbers = validate_moves(board)[1], validate_moves(board)[2]
     user_input = ""
     while True:
-        user_input = input("Please give me a coordinate! ").upper()
+        user_input = input(colour_print(32, "Please give me a coordinate!")).upper()
         if user_input not in valid_moves:
-            print("It's not a valid coordinate! Please try again! ")
+            print(colour_print(31, "It's not a valid coordinate! Please try again!"))
             continue
         else:
             row_index, col_index = user_input[0], user_input[1::]
             row = valid_letters.index(row_index)
             col = valid_numbers.index(col_index)
             if board[row][col] != '.':
-                print("The field is already taken")
+                print(colour_print(31, "The field is already taken!"))
                 continue
             return row, col
 
@@ -145,7 +145,7 @@ def smart_ai_checking_two(board, player2, enemy):
 def get_ai_move(board, player2, enemy):
     """Returns the coordinates of a valid move for player on board."""
     valid_moves = ai_validate_moves(board)
-    number = len(board) - 1
+    number = len(board)
     if number == 3 and board[1][1] != player2 and board[1][1] != enemy:
         row, col = 1, 1
     elif number == 3 and board[1][1] == enemy:
@@ -164,7 +164,6 @@ def ai_validate_moves(board):
             if board[row][col] == '.':
                 ai_tuple_coord = (row, col)
                 valid_moves.append(ai_tuple_coord)
-    print(ai_tuple_coord, valid_moves)
     return valid_moves
 
 
@@ -200,7 +199,7 @@ def has_won_row(board, player, number):
                         if count == 4:
                             return True                        
                 elif board[row][col] == player and board[row][col+1] != player:
-                    count -= 1 # 0 jobb   
+                    count = 0   
             except IndexError:
                 continue
     return False
@@ -208,10 +207,10 @@ def has_won_row(board, player, number):
 
 def has_won_coloumn(board, player, number):
     count = 0
-    for col in range(len(board)):
-        for row in range(len(board[col])):
+    for row in range(len(board)):
+        for col in range(len(board[row])):
             try:
-                if board[col][row] == player and board[col+1][row] == player:
+                if board[row][col] == player and board[row+1][col] == player:
                     count += 1
                     if number < 7:
                         if count == 2:
@@ -219,8 +218,8 @@ def has_won_coloumn(board, player, number):
                     else:
                         if count == 4:
                             return True                        
-                elif board[col][row] == player and board[col+1][row] != player:
-                    count -= 1    
+                elif board[row][col] == player and board[row+1][col] != player:
+                    count = 0    
             except IndexError:
                 continue
     return False
@@ -228,10 +227,10 @@ def has_won_coloumn(board, player, number):
 
 def has_won_diagonal1(board, player, number):
     count = 0
-    for col in range(len(board)):
-        for row in range(len(board[col])):
+    for row in range(len(board)):
+        for col in range(len(board[row])):
             try:
-                if board[col][row] == player and board[col+1][row+1] == player:
+                if board[row][col] == player and board[row+1][col+1] == player:
                     count += 1
                     if number < 7:
                         if count == 2:
@@ -239,8 +238,8 @@ def has_won_diagonal1(board, player, number):
                     else:
                         if count == 4:
                             return True                        
-                elif board[col][row] == player and board[col+1][row+1] != player:
-                    count -= 1    
+                elif board[row][col] == player and board[row+1][col+1] != player:
+                    count = 0    
             except IndexError:
                 continue
     return False
@@ -248,10 +247,10 @@ def has_won_diagonal1(board, player, number):
 
 def has_won_diagonal2(board, player, number):
     count = 0
-    for col in range(len(board)):
-        for row in range(len(board[col])):
+    for row in range(len(board)):
+        for col in range(len(board[row])):
             try:
-                if board[col][row] == player and board[col-1][row+1] == player:
+                if board[row][col] == player and board[row-1][col+1] == player:
                     count += 1
                     if number < 7:
                         if count == 2:
@@ -259,8 +258,8 @@ def has_won_diagonal2(board, player, number):
                     else:
                         if count == 4:
                             return True                        
-                elif board[col][row] == player and board[col-1][row+1] != player:
-                    count -= 1    
+                elif board[row][col] == player and board[row-1][col+1] != player:
+                    count = 0    
             except IndexError:
                 continue
     return False
@@ -276,7 +275,7 @@ def is_full(board):
 
 
 def colour_print(colour_code, word):
-    return f'\u001b[{colour_code};1m{word}\001'
+    return f'\u001b[{colour_code};1m{word}\u001b[0m'
 
 
 def print_board(board, number):
@@ -284,16 +283,16 @@ def print_board(board, number):
     abc_list = string.ascii_uppercase
     for number in range(number):
         if number == 0:
-            print('   ' + str(number+1), end='  ')
+            print('  ', colour_print(31, str(number+1)), end='  ')
         elif number > 0 and number < 10:
-            print('  ' + str(number+1), end='  ')
+            print('  ' + colour_print(31, str(number+1)), end='  ')
         else:
-            print(' ' + str(number+1), end='  ')
+            print(' ' + colour_print(31, str(number+1)), end='  ')
     print('')
     for i in range(len(board)):
         for j in range(len(board[i])):
             if j == 0:
-                print(abc_list[i] + '  ' + board[i][j], end = ' ' + ' |')
+                print(colour_print(31, abc_list[i]) + '  ' + board[i][j], end = ' ' + ' |')
             else:
                 print(' ' + board[i][j], end = ' ' + ' |')
         print('')
@@ -304,20 +303,21 @@ def print_board(board, number):
 
 def print_result(winner):
     """Congratulates winner or proclaims tie (if winner equals zero)."""
-    print(f'{winner} takes it all! Congrats for {winner} !')
+    print(f'{winner} player takes it all! Congrats for {winner} player !')
     play_again()
 
 
 def play_again():
     while True:
-        user_input = input("Would you like to play again?\nYes or No?\n ")
+        user_input = input(colour_print(32, "Would you like to play again?\nYes or No?\nPress y or n"))
         if user_input.lower() == "y":
+            clear()
             main_menu()
         elif user_input.lower() == "n":
-            print("Thank you for playing!\nHave a nice day!\n ")
+            print(colour_print(32, "Thank you for playing!\nHave a nice day!"))
             sys.exit()
         else:
-            print("Invalid input, please try again! y/n")
+            print(colour_print(31, "Invalid input, please try again! y/n"))
             continue
 
 
@@ -327,7 +327,7 @@ def tictactoe_game(board, number, mode='HUMAN-HUMAN'):
     clear()
     print_board(board, number)
     while True:
-        player1, player2 = "X", "0"
+        player1, player2 = colour_print(31, "X"), colour_print(32, "0") 
         if counter % 2 == 1:
             row, col = get_move(board, player1)
             time.sleep(1)
@@ -353,7 +353,7 @@ def tictactoe_game(board, number, mode='HUMAN-HUMAN'):
                 print_result(player2)
             counter -= 1
         if is_full(board):
-            print("It's a tie!")
+            print(colour_print(31, "It's a tie!"))
             play_again()
 
 
